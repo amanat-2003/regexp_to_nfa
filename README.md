@@ -3,6 +3,11 @@ This program translates regular expressions into Non-Deterministic Finite Automa
 
 Made by Amanat Singh.
 
+This project is live on the link:
+https://re-to-nfa.anamihub.com
+
+Also visit https://anamihub.com for development of your digital product(App(including e-Commerce app, Learning Management System App, Video Streaming App etc) (complete setup with admin panel) as well as Website Development)
+
 All apps that i have made are given on my portfolio:
 https://amanatsingh.tech/portfolio
 

@@ -119,7 +119,7 @@ class _NFADiagramScreenState extends State<NFADiagramScreen> {
               children: [
                 FlutterSocialButton(
                   onTap: () {
-                    // _launchUrl();
+                    _launchUrl("https://github.com/amanat-2003/regexp_to_nfa");
                   },
                   buttonType: ButtonType.github,
                   mini: true,

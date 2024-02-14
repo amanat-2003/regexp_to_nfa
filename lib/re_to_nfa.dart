@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 int stateId = 0;
 int inputId = 0;
 
@@ -27,6 +28,9 @@ class StateNode {
   void applyTransition(StateNode toState, Input inp) {
     transitions.add(Transition.named(toState, inp));
   }
+
+  @override
+  String toString() => 'StateNode(id: $id, stringVal: $stringVal, transitions: $transitions)';
 }
 
 class Transition {
@@ -42,6 +46,9 @@ class Transition {
     nextState = noState;
     input = Input();
   }
+
+  @override
+  String toString() => 'Transition(nextState: $nextState, input: $input)';
 }
 
 class Input {
@@ -63,6 +70,9 @@ class Input {
   static Input epsilon() {
     return Input.named("ε");
   }
+
+  @override
+  String toString() => 'Input(id: $id, stringVal: $stringVal)';
 }
 
 Input a = Input.named('a');
@@ -163,7 +173,7 @@ class NFA {
         outputStr += '| ${nextStateStr.padRight(15)}'; // Adjusted padding
       }
 
-      print(outputStr + '|');
+      print('$outputStr|');
       print(
           '|----------------|----------------|----------------|----------------|');
     }
@@ -287,26 +297,25 @@ String infixToPostfix(String infix) {
 NFA solvePostfixExpression(String postFix) {
   var nfas = <NFA>[];
 
-  for (var c in postFix.runes) {
-    if (RegExp(r'[a-zA-Z0-9]').hasMatch(String.fromCharCode(c))) {
-      var tempInput = inputsMap[String.fromCharCode(c)];
-      var tempNFA = NFA.singleTransition(tempInput!);
+  List<String> chars = postFix.split('');
+
+  for (var str in chars) {
+    if (RegExp(r'^[abeε]*$').hasMatch(str)) {
+      var tempNFA = NFA.singleTransition(inputsMap[str]!);
       nfas.add(tempNFA);
-    } else if (String.fromCharCode(c) == '+' ||
-        String.fromCharCode(c) == '|') {
+    } else if (str == '+' || str == '|') {
       var poppedNFA2 = nfas.last;
       nfas.removeLast();
       var poppedNFA1 = nfas.last;
       nfas.removeLast();
       var resultNFA = unionOperation(poppedNFA1, poppedNFA2);
       nfas.add(resultNFA);
-    } else if (String.fromCharCode(c) == '*') {
+    } else if (str == '*') {
       var poppedNFA = nfas.last;
       nfas.removeLast();
       var resultNFA = kleeneClosure(poppedNFA);
       nfas.add(resultNFA);
-    } else if (String.fromCharCode(c) == '.' ||
-        String.fromCharCode(c) == '?') {
+    } else if (str == '.' || str == '?') {
       var poppedNFA2 = nfas.last;
       nfas.removeLast();
       var poppedNFA1 = nfas.last;
@@ -316,10 +325,36 @@ NFA solvePostfixExpression(String postFix) {
     }
   }
 
+  // for (var c in postFix.runes) {
+  //   if (RegExp(r'^[abeε]*$').hasMatch(String.fromCharCode(c))) {
+  //     var tempInput = inputsMap[String.fromCharCode(c)];
+  //     var tempNFA = NFA.singleTransition(tempInput!);
+  //     nfas.add(tempNFA);
+  //   } else if (String.fromCharCode(c) == '+' || String.fromCharCode(c) == '|') {
+  //     var poppedNFA2 = nfas.last;
+  //     nfas.removeLast();
+  //     var poppedNFA1 = nfas.last;
+  //     nfas.removeLast();
+  //     var resultNFA = unionOperation(poppedNFA1, poppedNFA2);
+  //     nfas.add(resultNFA);
+  //   } else if (String.fromCharCode(c) == '*') {
+  //     var poppedNFA = nfas.last;
+  //     nfas.removeLast();
+  //     var resultNFA = kleeneClosure(poppedNFA);
+  //     nfas.add(resultNFA);
+  //   } else if (String.fromCharCode(c) == '.' || String.fromCharCode(c) == '?') {
+  //     var poppedNFA2 = nfas.last;
+  //     nfas.removeLast();
+  //     var poppedNFA1 = nfas.last;
+  //     nfas.removeLast();
+  //     var resultNFA = concatenationOperation(poppedNFA1, poppedNFA2);
+  //     nfas.add(resultNFA);
+  //   }
+  // }
+
   // now nfas stack is empty
   var ansNFA = nfas.last;
   nfas.removeLast();
 
   return ansNFA;
 }
-

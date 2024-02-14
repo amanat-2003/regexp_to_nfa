@@ -3,7 +3,7 @@
     "short_name": "regexp_to_nfa",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#00FFFF",
+    "background_color": "#00FFFFFF",
     "theme_color": "#FFFFFF",
     "description": "A new Flutter project.",
     "orientation": "portrait-primary",
